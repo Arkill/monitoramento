@@ -1,0 +1,1055 @@
+/* Geral */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cabeçalho */
+.header {
+  background-color: #333;
+  padding: 10px 0;
+}
+
+/* Barra de navegação */
+.navbar {
+  background-color: #444;
+  border: none;
+  border-radius: 0;
+  padding: 10px 0;
+}
+
+.navbar .navbar-header .navbar-brand {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navbar .navbar-header .navbar-brand img {
+  width: 40px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.navbar-text {
+  color: #fff;
+  font-size: 16px;
+}
+
+/* Botão de colapso para dispositivos menores */
+.navbar-toggle {
+  background-color: #444;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: none; /* Ocultar por padrão */
+}
+
+.navbar-toggle .icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #fff;
+  margin: 4px 0;
+}
+
+.navbar-toggle:hover {
+  background-color: #555;
+}
+
+/* Exibir o botão apenas em dispositivos móveis */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: block; /* Exibe apenas em telas menores */
+  }
+}
+
+/* Navegação */
+.navbar-nav > li > a {
+  color: #fff;
+  padding: 15px 20px;
+  font-size: 16px;
+}
+
+.navbar-nav > li > a:hover {
+  background-color: #555;
+  color: #ff0;
+}
+
+.navbar-nav > li.active > a {
+  background-color: #555;
+  color: #ff0;
+}
+
+/* Ajuste da responsividade */
+@media (max-width: 768px) {
+  .navbar-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .navbar-text {
+    font-size: 14px;
+  }
+
+  .navbar-brand img {
+    width: 30px;
+  }
+
+  .navbar-collapse {
+    display: none; /* Oculta por padrão */
+  }
+
+  .navbar-collapse.in {
+    display: block !important; /* Mostra ao clicar no toggle */
+  }
+}
+
+/* Logo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+.navbar-brand img {
+  width: 40px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.navbar-brand:hover {
+  text-decoration: none;
+  color: #ff0;
+}
+
+/* Texto de identificação do usuário */
+.navbar-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+/* Botão de colapso para dispositivos menores */
+.navbar-toggle {
+  background-color: #444;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.navbar-toggle .icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #fff;
+  margin: 4px 0;
+}
+
+.navbar-toggle:hover {
+  background-color: #555;
+}
+
+/* Ajuste da responsividade */
+@media (max-width: 768px) {
+  .navbar-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .navbar-text {
+    font-size: 14px;
+  }
+
+  .navbar-brand img {
+    width: 30px;
+  }
+
+  .navbar-toggle {
+    margin-left: auto;
+  }
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  display: none; /* Não visível por padrão */
+  position: absolute;
+  top: 100%; /* Gruda logo abaixo do item pai */
+  left: 0;
+  background: linear-gradient(135deg, #444, #333);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 10px 0;
+  min-width: 180px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Exibição do Dropdown */
+.navbar-nav > li:hover > .dropdown-menu,
+.navbar-nav > li:focus-within > .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Certificar que o pai do dropdown tem posição relativa */
+.navbar-nav > li {
+  position: relative;
+}
+
+/* Estilo dos itens do dropdown */
+.dropdown-menu li {
+  list-style: none;
+}
+
+.dropdown-menu li a {
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-decoration: none;
+  display: block;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #555;
+  padding-left: 25px;
+  color: #ff0;
+}
+
+/* Aumentando a área sensível */
+.navbar-nav > li > a {
+  position: relative;
+  padding: 15px 20px;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  display: block;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+  background-color: #555;
+  color: #ff0;
+  outline: none;
+}
+
+/* Mantém o hover ativo na área do dropdown */
+.navbar-nav > li:hover .dropdown-menu,
+.navbar-nav > li:focus-within .dropdown-menu {
+  pointer-events: auto;
+  display: block;
+}
+
+/* Estilo geral do painel */
+.panel {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.panel-heading {
+  background-color: #f7f7f7;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px 8px 0 0;
+}
+
+.panel-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.panel-title i {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #007bff;
+}
+
+/* Botão de adicionar usuário */
+.nav-tabs.nav-icons {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-tabs.nav-icons li a {
+  background-color: #007bff;
+  border-radius: 50%;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-tabs.nav-icons li a:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.nav-tabs.nav-icons li a i {
+  font-size: 18px;
+}
+
+/* Filtros ocultos */
+input[data-filter] {
+  display: none;
+}
+
+/* Conteúdo principal */
+.content {
+  padding: 20px;
+}
+
+.container-fluid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Garantir que o dropdown "grude" no botão */
+.navbar-nav > li {
+  position: relative;
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    background: #444;
+    transform: none;
+    opacity: 1;
+    display: block;
+  }
+}
+
+/* Barra de navegação - itens */
+.navbar-nav {
+  display: flex; /* Usa o Flexbox para a disposição horizontal */
+  justify-content: space-around; /* Distribui os itens de forma igual */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-nav > li > a {
+  color: #fff;
+  padding: 15px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.navbar-nav > li > a:hover {
+  background-color: #555;
+  color: #ff0;
+}
+
+.navbar-nav > li.active > a {
+  background-color: #555;
+  color: #ff0;
+}
+
+.navbar-nav > li > a .text {
+  display: inline-block;
+}
+
+/* Dropdowns */
+.navbar-nav > li > a[data-toggle="dropdown"]:hover {
+  background-color: #555;
+}
+
+/* Estilo do menu suspenso (Dropdown) */
+.dropdown-menu {
+  background-color: #444;
+  border: none;
+  padding: 0;
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  margin-top: 10px;
+}
+
+.dropdown-menu li a {
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #555;
+}
+
+/* Menu suspenso de usuário */
+.dropdown-menu > li > a .icon {
+  margin-right: 10px;
+}
+
+.navbar-nav > li > a .caret {
+  color: #fff;
+  margin-left: 5px;
+}
+
+/* Exibe o dropdown quando o item é focado ou clicado */
+.navbar-nav > li:hover > .dropdown-menu {
+  display: block;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column; /* Torna a navegação vertical em telas pequenas */
+    text-align: center;
+  }
+
+  .navbar-nav > li > a {
+    padding: 12px 15px;
+  }
+
+  .navbar-collapse {
+    display: none;
+  }
+
+  .navbar-toggle.collapsed {
+    display: block;
+  }
+
+  .navbar-collapse.in {
+    display: block !important;
+  }
+
+  .navbar-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .navbar-header .navbar-brand {
+    font-size: 18px;
+  }
+}
+
+/* Cor de fundo para o logo */
+.navbar .navbar-header .navbar-brand {
+  background-color: #333;
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+.navbar-nav > li {
+  list-style: none;
+  display: inline-block;
+}
+
+.navbar-nav > li > a {
+  display: block;
+  padding: 10px 15px;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li.active > a {
+  background-color: #555;
+}
+
+.navbar-nav > li > a .text {
+  display: inline-block;
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 15px;
+}
+
+/* Barra de navegação */
+.navbar {
+  background-color: #333;
+  border-bottom: 2px solid #444;
+  padding: 10px 0;
+}
+
+.navbar .navbar-header .navbar-brand {
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-nav > li > a {
+  color: #fff;
+  padding: 15px 20px;
+  font-size: 16px;
+}
+
+.navbar-nav > li > a:hover {
+  background-color: #444;
+  color: #ff0;
+}
+
+.navbar-nav > li.active > a {
+  background-color: #555;
+  color: #ff0;
+}
+
+.navbar-nav > li > a .text {
+  display: inline-block;
+}
+
+.navbar-nav > li > a:hover .text {
+  color: #ff0;
+}
+
+/* Tabela de Usuários */
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.table-list th, .table-list td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-list th {
+  background-color: #333;
+  color: #fff;
+}
+
+.table-list td {
+  background-color: #fff;
+  color: #333;
+}
+
+.table-list tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-list .checkbox input {
+  margin: 0;
+}
+
+/* Tabela - Ações */
+.actions {
+  text-align: right;
+}
+
+.actions .btn-group {
+  display: inline-block;
+}
+
+.actions .btn-group .dropdown-menu {
+  background-color: #444;
+}
+
+.actions .btn-group .dropdown-menu a {
+  color: #fff;
+  padding: 10px;
+}
+
+.actions .btn-group .dropdown-menu a:hover {
+  background-color: #555;
+  color: #ff0;
+}
+
+/* Geral */
+.panel-form {
+  margin-bottom: 20px;
+}
+
+.panel-form .form-group {
+  margin-bottom: 10px;
+}
+
+.panel-form .form-control {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 30px;
+  transition: border-color 0.3s ease;
+  width: 100%; /* Isso vai fazer o campo ocupar toda a largura disponível */
+}
+
+.panel-form .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+/* Painel principal */
+.panel-body {
+  padding: 50px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+/* Tabela */
+.table-responsive {
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-collapse: collapse;
+  z-index: 0;
+}
+.table-container {
+  position: relative; /* Para não ser afetada pelo modal */
+  z-index: 0;
+}
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.table-list {
+  table-layout: auto; /* Garantir que a tabela se ajuste corretamente */
+}
+
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Checkbox */
+.checkbox input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.2);
+}
+
+.checkbox label {
+  display: inline-block;
+  margin: 0;
+}
+
+/* Botão dropdown */
+.dropdown .btn {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.dropdown .btn:hover {
+  color: #0056b3;
+}
+
+.dropdown-menu {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+
+.dropdown-menu li a {
+  padding: 10px 15px;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f7f7f7;
+  color: #007bff;
+}
+
+.nav-tabs.nav-icons.pull-right li a {
+  background-color: #28a745;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 40px; /* Maior padding para aumentar o botão */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none; /* Remove a linha de borda */
+  margin-left: 10px; /* Desloca a caixa ligeiramente para a direita */
+}
+
+.nav-tabs.nav-icons.pull-right li a i {
+  margin-right: 10px;
+  font-size: 20px; /* Tamanho do ícone ajustado */
+}
+
+.nav-tabs.nav-icons.pull-right li a:hover {
+  background-color: #218838; /* Cor de hover mais suave */
+  transform: scale(1.05); /* Efeito de leve aumento */
+}
+
+.nav-tabs.nav-icons.pull-right li a:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Sombra leve para foco */
+}
+
+/* Status ativo/inativo */
+.label {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Estilo para "Inativo" */
+.label-warning {
+  background-color: #f39c12; /* Cor laranja */
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.label-success {
+  background-color: #28a745;
+}
+
+.table_error {
+  display: none;
+  padding: 15px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Ações */
+.actions {
+  text-align: right;
+}
+
+.actions .btn {
+  margin-right: 5px;
+}
+
+
+/* Paginação */
+.nav-pagination {
+  margin-top: 30px;
+}
+
+.pagination {
+  justify-content: flex-end;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination .page-item {
+  display: inline-block;
+}
+
+.pagination .page-item a, .pagination .page-item span {
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.pagination .page-item.active a {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination .page-item a:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+/* Rodapé */
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.footer-links {
+  margin-bottom: 20px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #333;
+}
+
+.footer-links a:hover {
+  color: #007bff;
+}
+
+.footer-info {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #777;
+}
+
+.footer-info p {
+  margin: 5px 0;
+}
+
+.footer-social {
+  margin-top: 20px;
+}
+
+.social-icon {
+  margin: 0 10px;
+  font-size: 24px;
+  color: #333;
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  color: #007bff;
+}
+
+/* Formulário */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.checkbox label {
+  font-size: 16px;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Estilo dos Botões */
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Ajuste de layout para telas menores */
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column; /* Torna a navegação vertical em telas pequenas */
+    text-align: center;
+  }
+
+  .navbar-nav > li > a {
+    padding: 12px 15px;
+  }
+
+  .footer {
+    padding: 20px 0;
+  }
+
+  .footer-links a, .footer-social a {
+    display: block;
+    margin: 5px 0;
+  }
+}
+
+/* Rodapé */
+.footer-links a {
+  color: #007bff;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.footer-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.footer-social a {
+  margin: 0 10px;
+  color: #555;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.footer-social a:hover {
+  color: #007bff;
+}
+
+.footer-social i {
+  font-size: 25px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .pagination {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .footer {
+      text-align: center;
+      padding: 30px 15px;
+  }
+
+  .footer-links, .footer-social {
+      margin-top: 15px;
+  }
+
+  .footer-info p {
+      font-size: 12px;
+  }
+}
+
+/* Transições */
+.page-link, .footer-links a, .footer-social a {
+  transition: all 0.3s ease-in-out;
+}
+
+.footer-social {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.social-icon {
+  font-size: 30px;
+  margin: 0 10px;
+  color: #333;
+}
+
+.social-icon:hover {
+  color: #0073e6;
+}
+
+input[type="number"], input[type="date"], select {
+  margin-top: 10px;
+  padding: 5px;
+}
+
+input[type="checkbox"] {
+  margin-top: 20px;
+}
+
+.settings-dropdown-menu {
+  display: none;
+}
+.settings-dropdown-menu.show {
+  display: block;
+}
+
+
+/* Toast container */
+#toast-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+}
+
+/* Estilos para cada toast */
+.toast {
+  background-color: #4CAF50; /* Cor verde de sucesso */
+  color: white;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateX(100%);
+  animation: toastAnimation 0.5s forwards;
+}
+
+/* Animação do toast */
+@keyframes toastAnimation {
+  0% {
+      opacity: 0;
+      transform: translateX(100%);
+  }
+  100% {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+
+
+

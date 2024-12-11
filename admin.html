@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt" class="no-js">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>TestADM - Gestão de Plataformas</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="app-version" content="0.0.1 (Alpha)">
+    <meta name="csrf-token" content="xLpnuISzp4SW5r9vXBBAeGNEPVcjCdqAA3AiOrSv">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="n_estilo.css">
+    <link rel="stylesheet" href="CSS Checkbox/CSS Checkbox/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="cd.css">
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+
+<body class="admin-layout">
+    <div class="header">
+        <!-- Barra de navegação principal -->
+        <nav class="navbar navbar-main navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                     <!-- Botão para colapsar a navegação em telas menores -->
+                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                     data-target="#bs-header-navbar-collapse" aria-expanded="false">
+                     <span class="sr-only">Toggle navigation</span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                 </button>
+
+                    <!-- Logo da marca -->
+                    <a class="navbar-brand" href="javascript:">
+                        <img src="img/R.png">
+                    </a>
+
+                    <!-- Texto de identificação do usuário -->
+                    <p class="navbar-text">ADMIN</p>
+                </div>
+<!-- Barra de navegação -->
+<div class="collapse navbar-collapse" id="bs-header-navbar-collapse">
+    <ul class="nav navbar-nav navbar-right">
+        <!-- Link do Mapa -->
+        <li>
+            <a href="moni.html">
+                <span class="text">Mapa</span>
+            </a>
+        </li>
+        
+        <!-- Link de Usuários -->
+        <li class="active">
+            <a href="#">
+                <span class="text">Usuários (27)</span>
+            </a>
+        </li>
+        
+        <!-- Link de Dispositivos -->
+        <li>
+            <a href="#">
+                <span class="text">Dispositivos (9/14)</span>
+            </a>
+        </li>
+        
+        <!-- Menu suspenso de Conteúdo -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Conteúdo <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="email_templates.html"><span class="text">Modelos de email</span></a></li>
+                <li><a href="sms_templates.html"><span class="text">Modelos de SMS</span></a></li>
+                <li><a href="companies.html"><span class="text">Empresas</span></a></li>
+            </ul>
+        </li>
+        
+        <!-- Link de Personalização -->
+        <li>
+            <a href="settings.html">
+                <i class="icon setup"></i> <span class="text">Personalização</span>
+            </a>
+        </li>
+        
+        <!-- Menu suspenso de Logs -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon logs"></i> <span class="text">Logs</span> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="report_logs.html"><span class="text">Registro de relatório agendado</span></a></li>
+            </ul>
+        </li>
+        
+        <!-- Menu suspenso de Usuário -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                atendim@ajuda <i class="caret"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="login.html"><i class="icon logout"></i><span class="text">Sair</span></a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!-- Conteúdo Principal -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="panel panel-default" id="table_clients">
+            <!-- Filtros ocultos para ordenação -->
+            <input type="hidden" name="sorting[sort_by]" value="email" data-filter>
+            <input type="hidden" name="sorting[sort]" value="asc" data-filter>
+
+            <div class="panel-heading">
+                <!-- Botões de ações no canto direito -->
+                <ul class="nav nav-tabs nav-icons pull-right">
+                    <!-- Botão de adicionar novo usuário -->
+                    <li role="presentation">
+                        <a href="javascript:" type="button" data-modal="clients_create" data-url="cadastro.html" class="action-button" title="Adicionar Usuário">
+                            <i class="fa fa-user-plus"></i>
+                        </a>
+                    </li>
+                    <!-- Botão de adicionar novo dispositivo -->
+                    <li role="presentation">
+                        <a href="javascript:" type="button" data-modal="devices_create" data-url="cadastro_dispositivo.html" class="action-button" title="Adicionar Dispositivo">
+                            <i class="fa fa-mobile"></i>
+                        </a>
+                    </li>
+                    <!-- Botão de importar dispositivos -->
+                    <li role="presentation">
+                        <a href="javascript:" type="button" data-modal="import_devices" data-url="importar_dispositivos.html" class="action-button" title="Importar Dispositivos">
+                            <i class="fa fa-upload"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Título do painel -->
+                <div class="panel-title">
+                    <i class="icon user"></i> Usuários e Dispositivos
+                </div>
+
+                    <!-- Formulário de pesquisa -->
+                    <div class="panel-form">
+                        <div class="form-group search">
+                            <input class="form-control" placeholder="Pesquisa" data-filter="true" name="search_phrase" type="text">
+                        </div>
+                        <div class="form-group search">
+                            <input class="form-control" placeholder="Pesquisar dispositivo IMEI" data-filter="true" name="search_device" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body" data-table>
+                    <!-- Mensagem de erro da tabela -->
+                    <div class="table_error"></div>
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+                    <!-- Tabela de usuários -->
+                    <div class="table-responsive">
+                        <table class="table table-list" data-toggle="multiCheckbox">
+                            <table class="table table-list" data-toggle="multiCheckbox">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <!-- Checkbox customizado para selecionar todos -->
+                                               <!-- Botão com ícone para abrir o dropdown -->
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle">
+                                                    <i class="fas fa-cogs"></i> <!-- Ícone do menu -->
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="activateAll()">Ativar</button>
+                                                    <button onclick="deactivateAll()">Desativar</button>
+                                                    <button onclick="deleteAll()">Excluir</button>
+                                                </div>
+                                            </div>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="select-all"/>
+                                                <label for="select-all" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th>Ativo</th>
+                                        <th>Email</th>
+                                        <th>Dispositivos</th>
+                                        <th>Limite de dispositivos</th>
+                                        <th>Data de validade</th>
+                                        <th>Último login</th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Cliente 2 Inativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx2"/>
+                                                <label for="cbx2" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td>janedoe@example.com</td>
+                                        <td>0</td>
+                                        <td>2</td>
+                                        <td>15-12-2024</td>
+                                        <td>05-12-2024 10:25:45</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18772)">Editar</button>
+                                                    <button onclick="deleteClient(18772)">Excluir</button>
+                                                    <button onclick="loginAsClient(18772)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 3 Ativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx3"/>
+                                                <label for="cbx3" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td>alex@example.com</td>
+                                        <td>1</td>
+                                        <td>3</td>
+                                        <td>20-12-2024</td>
+                                        <td>10-12-2024 14:30:01</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18773)">Editar</button>
+                                                    <button onclick="deleteClient(18773)">Excluir</button>
+                                                    <button onclick="loginAsClient(18773)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 4 Inativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx4"/>
+                                                <label for="cbx4" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td>mark@example.com</td>
+                                        <td>3</td>
+                                        <td>1</td>
+                                        <td>22-12-2024</td>
+                                        <td>13-12-2024 08:25:30</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18774)">Editar</button>
+                                                    <button onclick="deleteClient(18774)">Excluir</button>
+                                                    <button onclick="loginAsClient(18774)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 5 Ativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx5"/>
+                                                <label for="cbx5" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td>emily@example.com</td>
+                                        <td>4</td>
+                                        <td>3</td>
+                                        <td>28-12-2024</td>
+                                        <td>15-12-2024 10:45:56</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18775)">Editar</button>
+                                                    <button onclick="deleteClient(18775)">Excluir</button>
+                                                    <button onclick="loginAsClient(18775)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 6 Inativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx6"/>
+                                                <label for="cbx6" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td>frank@example.com</td>
+                                        <td>2</td>
+                                        <td>6</td>
+                                        <td>30-12-2024</td>
+                                        <td>17-12-2024 12:30:12</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18776)">Editar</button>
+                                                    <button onclick="deleteClient(18776)">Excluir</button>
+                                                    <button onclick="loginAsClient(18776)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 7 Ativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx7"/>
+                                                <label for="cbx7" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td>george@example.com</td>
+                                        <td>6</td>
+                                        <td>8</td>
+                                        <td>05-01-2025</td>
+                                        <td>20-12-2024 09:50:22</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18777)">Editar</button>
+                                                    <button onclick="deleteClient(18777)">Excluir</button>
+                                                    <button onclick="loginAsClient(18777)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 8 Inativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx8"/>
+                                                <label for="cbx8" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td>helen@example.com</td>
+                                        <td>5</td>
+                                        <td>9</td>
+                                        <td>10-01-2025</td>
+                                        <td>22-12-2024 14:35:11</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18778)">Editar</button>
+                                                    <button onclick="deleteClient(18778)">Excluir</button>
+                                                    <button onclick="loginAsClient(18778)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 9 Ativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx9"/>
+                                                <label for="cbx9" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td>ian@example.com</td>
+                                        <td>7</td>
+                                        <td>11</td>
+                                        <td>15-01-2025</td>
+                                        <td>05-01-2025 16:25:40</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18779)">Editar</button>
+                                                    <button onclick="deleteClient(18779)">Excluir</button>
+                                                    <button onclick="loginAsClient(18779)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            
+                                    <!-- Cliente 10 Inativo -->
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" class="checkbox-item" id="cbx10"/>
+                                                <label for="cbx10" class="toggle">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td>julia@example.com</td>
+                                        <td>8</td>
+                                        <td>12</td>
+                                        <td>18-01-2025</td>
+                                        <td>01-01-2025 11:00:09</td>
+                                        <td class="actions">
+                                            <div class="dropdown">
+                                                <button>
+                                                    <i class="fas fa-cogs"></i> Configurações
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <button onclick="editClient(18780)">Editar</button>
+                                                    <button onclick="deleteClient(18780)">Excluir</button>
+                                                    <button onclick="loginAsClient(18780)">Logar como Cliente</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Rodapé -->
+    <div class="footer">
+        <!-- Links importantes -->
+        <div class="footer-links mb-3">
+            <a href="/privacy-policy" class="text-decoration-none">Política de Privacidade</a> | 
+            <a href="/terms-of-service" class="text-decoration-none">Termos de Uso</a>
+        </div>
+    
+        <!-- Informações do sistema -->
+        <div class="footer-info mb-3">
+            <p>&copy; 2024 <strong>TestADM</strong> | Versão 0.0.1 (Alpha)</p>
+            <p>Última atualização: 08 de Dezembro de 2024</p>
+        </div>
+    
+        <!-- Redes sociais -->
+        <div class="footer-social">
+            <a href="https://facebook.com/testADM" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com/testADM" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com/company/testADM" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+        </div>
+</body>
+
+<script src="Pure Animated CSS Modal/Pure Animated CSS Modal/main.js"></script>
+
+<script>
+    function toggleSettingsDropdown() {
+        var dropdown = document.getElementById("settings-dropdown-menu");
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+    }
+
+    // Fechar o dropdown se clicar fora dele
+    document.addEventListener("click", function(event) {
+        var dropdown = document.getElementById("settings-dropdown-menu");
+        var button = document.querySelector(".btn-group button");
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+            dropdown.style.display = "none";
+        }
+    });
+</script>
+
+<script>
+    // Fecha o dropdown se o usuário clicar fora dele
+document.addEventListener('click', function(event) {
+  var dropdown = document.querySelector('.dropdown-menu');
+  var isClickInside = dropdown.contains(event.target) || event.target.closest('.navbar-nav > li');
+
+  if (!isClickInside) {
+    dropdown.style.display = 'none';
+  }
+});
+</script>
+<script>
+    // Obter o checkbox de "Selecionar todos"
+    const selectAllCheckbox = document.getElementById('select-all');
+    // Obter todos os checkboxes da tabela
+    const checkboxes = document.querySelectorAll('.checkbox-item');
+
+    // Adicionar evento de clique para o checkbox "Selecionar todos"
+    selectAllCheckbox.addEventListener('change', function() {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked; // Marca todos os checkboxes com base no estado de "Selecionar todos"
+        });
+    });
+</script>
+
+<script>if (error) {
+    document.querySelector('.table_error').textContent = "Erro ao carregar dados. Tente novamente.";
+    document.querySelector('.table_error').style.display = 'block';
+}
+</script>
+
+<script src="drop.js""></script>
+
+</html> 

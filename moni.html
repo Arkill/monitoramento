@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Veículos em Manaus</title>
+
+    <!-- Adicionando o CSS do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    
+    <!-- Link para o arquivo CSS separado -->
+    <link rel="stylesheet" href="moni.css">
+</head>
+<body>
+
+    <!-- Título da página -->
+    <h1 style="text-align: center;">Monitoramento de Veículos em Manaus</h1>
+
+    <!-- Container do Mapa -->
+    <div id="map"></div>
+
+    <!-- Sidebar (Painel de informações) -->
+    <div id="sidebar">
+        <h2>Informações dos Veículos</h2>
+        <div id="vehicle-list"></div>
+    </div>
+
+    <!-- Script do Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <script>
+        // Inicializando o mapa com Leaflet, centralizando em Manaus
+        var map = L.map('map').setView([-3.119027, -60.212467], 12); // Coordenadas de Manaus
+
+        // Adicionando o tile layer (usando OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Exemplo de lista de veículos com suas coordenadas, nome, placa, modelo, cor, velocidade e tipo (moto ou carro)
+        var vehicles = [
+            { lat: -3.119027, lng: -60.014657, name: "Moto CG Honda", plate: "ABC-1234", model: "CG 160", color: "Vermelha", speed: 60, type: "moto", status: "ativo", marker: null, route: [] },
+            { lat: -3.103619, lng: -60.025018, name: "Strada", plate: "XYZ-5678", model: "Fiat Strada", color: "Branca", speed: 50, type: "carro", status: "ativo", marker: null, route: [] },
+            { lat: -3.087532, lng: -59.971213, name: "Jeep Renegade", plate: "LMN-9876", model: "Jeep Renegade", color: "Preta", speed: 80, type: "carro", status: "ativo", marker: null, route: [] },
+            { lat: -3.115167, lng: -59.97236, name: "Moto Yamaha", plate: "QWE-4567", model: "YBR 125", color: "Preta", speed: 55, type: "moto", status: "ativo", marker: null, route: [] },
+            { lat: -3.110578, lng: -59.969365, name: "Fusca", plate: "JKL-8524", model: "Volkswagen Fusca", color: "Azul", speed: 45, type: "carro", status: "desativado", marker: null, route: [] },
+            { lat: -3.121227, lng: -59.937543, name: "Gol", plate: "MNO-2145", model: "Volkswagen Gol", color: "Prata", speed: 50, type: "carro", status: "ativo", marker: null, route: [] }
+        ];
+
+        // Função para criar um ícone de carro ou moto com base no tipo de veículo
+        function createVehicleIcon(vehicleType) {
+            var iconUrl = vehicleType === "moto" ? 'img/moto.svg' : 'img/car.svg';
+            return new L.Icon({
+                iconUrl: iconUrl,
+                iconSize: [40, 40], // Tamanho do ícone
+                iconAnchor: [20, 40], // Posição do ícone em relação ao marcador
+                popupAnchor: [0, -40] // Posição do popup
+            });
+        }
+
+        // Função para gerar uma velocidade mais realista para os veículos
+        function generateRealisticSpeed(vehicleType) {
+            if (vehicleType === 'moto') {
+                return Math.floor(Math.random() * (100 - 40 + 1)) + 40; // Entre 40 e 100 km/h para motos
+            } else {
+                return Math.floor(Math.random() * (90 - 30 + 1)) + 30; // Entre 30 e 90 km/h para carros
+            }
+        }
+
+        // Função para atualizar a lista de veículos no painel
+        function updateVehicleList() {
+            var vehicleList = document.getElementById('vehicle-list');
+            vehicleList.innerHTML = ''; // Limpar lista existente
+
+            vehicles.forEach(function(vehicle) {
+                var vehicleDiv = document.createElement('div');
+                vehicleDiv.classList.add('vehicle-info');
+
+                vehicleDiv.innerHTML = `  
+                    <b>${vehicle.name}</b><br>
+                    Modelo: ${vehicle.model}<br>
+                    Placa: ${vehicle.plate}<br>
+                    Cor: ${vehicle.color}<br>
+                    Velocidade: ${vehicle.speed} km/h<br>
+                    <span class="vehicle-status">
+                        <span class="status-indicator ${vehicle.status === 'ativo' ? 'active' : 'inactive'}"></span>
+                    </span>
+                `;
+                vehicleList.appendChild(vehicleDiv);
+            });
+        }
+
+        // Adicionando marcadores para cada veículo e salvando a referência ao marcador
+        vehicles.forEach(function(vehicle) {
+            var popupContent = `  
+                <b>${vehicle.name}</b><br>
+                Modelo: ${vehicle.model}<br>
+                Cor: ${vehicle.color}<br>
+                Placa: ${vehicle.plate}<br>
+                Velocidade: ${vehicle.speed} km/h
+            `;
+
+            var icon = createVehicleIcon(vehicle.type); // Criando o ícone com base no tipo de veículo
+            var marker = L.marker([vehicle.lat, vehicle.lng], { icon: icon })
+                .addTo(map)
+                .bindPopup(popupContent)
+                .openPopup();
+
+            vehicle.marker = marker; // Armazenando a referência do marcador no veículo
+
+            // Inicializando a rota como um array vazio
+            vehicle.route = [ [vehicle.lat, vehicle.lng] ];
+        });
+
+        // Função para mover os veículos suavemente ao longo das ruas e desenhar a rota
+        function moveVehicles() {
+            vehicles.forEach(function(vehicle) {
+                // Atualiza a velocidade de forma mais realista
+                vehicle.speed = generateRealisticSpeed(vehicle.type);
+
+                // Definindo um movimento suave: em vez de mover aleatoriamente, simula um deslocamento gradual
+                var moveLat = (Math.random() - 0.5) * 0.0001; // Pequeno deslocamento
+                var moveLng = (Math.random() - 0.5) * 0.0001;
+
+                vehicle.lat += moveLat;
+                vehicle.lng += moveLng;
+
+                // Atualizando a posição do marcador no mapa
+                vehicle.marker.setLatLng([vehicle.lat, vehicle.lng]);
+
+                // Adicionando o ponto à rota do veículo
+                vehicle.route.push([vehicle.lat, vehicle.lng]);
+
+                // Desenhando a linha azul da rota
+                if (vehicle.route.length > 1) {
+                    if (vehicle.polyline) {
+                        vehicle.polyline.setLatLngs(vehicle.route); // Atualizando a linha
+                    } else {
+                        // Criando a linha azul da rota
+                        vehicle.polyline = L.polyline(vehicle.route, { color: 'blue' }).addTo(map);
+                    }
+                }
+
+                // Atualizando o popup com a nova posição e velocidade
+                var popupContent = `  
+                    <b>${vehicle.name}</b><br>
+                    Modelo: ${vehicle.model}<br>
+                    Cor: ${vehicle.color}<br>
+                    Placa: ${vehicle.plate}<br>
+                    Velocidade: ${vehicle.speed} km/h<br>
+                    Localização: ${vehicle.lat.toFixed(6)}, ${vehicle.lng.toFixed(6)}
+                `;
+                vehicle.marker.setPopupContent(popupContent); // Atualiza o conteúdo do popup
+            });
+
+            // Atualizando a lista de veículos no painel
+            updateVehicleList();
+        }
+
+        // Atualizando a posição dos veículos a cada 2 segundos
+        setInterval(moveVehicles, 2000);
+    </script>
+</body>
+</html>
