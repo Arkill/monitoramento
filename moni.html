@@ -122,6 +122,7 @@
 
     <!-- Script do Leaflet -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
     <script>
         // Inicializando o mapa com Leaflet, centralizando em Manaus
@@ -132,93 +133,59 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var vehicles = [
-            { lat: -3.119027, lng: -60.014657, name: "Moto CG Honda", plate: "ABC-1234", model: "CG 160", color: "Vermelha", speed: 60, type: "moto", status: "ativo", marker: null, route: [] },
-            { lat: -3.103619, lng: -60.025018, name: "Strada", plate: "XYZ-5678", model: "Fiat Strada", color: "Branca", speed: 50, type: "carro", status: "ativo", marker: null, route: [] }
-        ];
+        // Configuração da rota entre São José Operário e FAMETRO Chapada
+        var routingControl = L.Routing.control({
+            waypoints: [
+                L.latLng(-3.098264, -59.986498), // Coordenadas de São José Operário
+                L.latLng(-3.083526, -60.042486)  // Coordenadas da FAMETRO Chapada
+            ],
+            lineOptions: {
+                styles: [{ color: 'blue', opacity: 0.6, weight: 4 }]
+            },
+            createMarker: function() { return null; }, // Desabilitar marcadores automáticos
+        }).addTo(map);
 
-        function createVehicleIcon(vehicleType) {
-            var iconUrl = vehicleType === "moto" ? 'img/moto.svg' : 'img/car.svg';
-            return new L.Icon({
-                iconUrl: iconUrl,
-                iconSize: [40, 40],
-                iconAnchor: [20, 40],
-                popupAnchor: [0, -40]
-            });
-        }
-
-        function updateVehicleList() {
-            var vehicleList = document.getElementById('vehicle-list');
-            vehicleList.innerHTML = '';
-            vehicles.forEach(function(vehicle) {
-                var vehicleDiv = document.createElement('div');
-                vehicleDiv.classList.add('vehicle-info');
-                vehicleDiv.innerHTML = `  
-                    <b>${vehicle.name}</b><br>
-                    Modelo: ${vehicle.model}<br>
-                    Placa: ${vehicle.plate}<br>
-                    Cor: ${vehicle.color}<br>
-                    Velocidade: ${vehicle.speed} km/h<br>
-                    <span class="vehicle-status">
-                        <span class="status-indicator ${vehicle.status === 'ativo' ? 'active' : 'inactive'}"></span>
-                    </span>
-                `;
-                vehicleList.appendChild(vehicleDiv);
-            });
-        }
-
-        vehicles.forEach(function(vehicle) {
-            var icon = createVehicleIcon(vehicle.type);
-            var marker = L.marker([vehicle.lat, vehicle.lng], { icon: icon })
-                .addTo(map)
-                .bindPopup(`
-                    <b>${vehicle.name}</b><br>
-                    Modelo: ${vehicle.model}<br>
-                    Cor: ${vehicle.color}<br>
-                    Placa: ${vehicle.plate}<br>
-                    Velocidade: ${vehicle.speed} km/h
-                `);
-            vehicle.marker = marker;
-            vehicle.route = [[vehicle.lat, vehicle.lng]];
+        // Criar o veículo e mover ao longo da rota
+        var vehicleIcon = new L.Icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/194/194261.png',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40]
         });
 
-        // Função para gerar novas posições dentro da área de Manaus
-        function moveVehicles() {
-            vehicles.forEach(function(vehicle) {
-                var angle = Math.random() * Math.PI * 2;
-                var distance = Math.random() * 0.01; // Pequeno deslocamento
-                var newLat = vehicle.lat + Math.cos(angle) * distance;
-                var newLng = vehicle.lng + Math.sin(angle) * distance;
+        var vehicleMarker = L.marker([-3.098264, -59.986498], { icon: vehicleIcon }).addTo(map);
 
-                vehicle.lat = newLat;
-                vehicle.lng = newLng;
-                vehicle.speed = Math.floor(Math.random() * (100 - 20)) + 20;
-
-                vehicle.marker.setLatLng([vehicle.lat, vehicle.lng]);
-                vehicle.route.push([vehicle.lat, vehicle.lng]);
-
-                if (vehicle.route.length > 2) {
-                    if (vehicle.polyline) {
-                        vehicle.polyline.setLatLngs(vehicle.route);
-                    } else {
-                        vehicle.polyline = L.polyline(vehicle.route, { color: 'blue' }).addTo(map);
-                    }
+        function moveVehicleOnRoute(routeCoordinates) {
+            var index = 0;
+            function move() {
+                if (index < routeCoordinates.length) {
+                    vehicleMarker.setLatLng(routeCoordinates[index]);
+                    index++;
+                    setTimeout(move, 1000); // Intervalo de 1 segundo entre os movimentos
                 }
-
-                vehicle.marker.setPopupContent(`
-                    <b>${vehicle.name}</b><br>
-                    Modelo: ${vehicle.model}<br>
-                    Cor: ${vehicle.color}<br>
-                    Placa: ${vehicle.plate}<br>
-                    Velocidade: ${vehicle.speed} km/h<br>
-                    Localização: ${vehicle.lat.toFixed(5)}, ${vehicle.lng.toFixed(5)}
-                `);
-            });
-
-            updateVehicleList();
+            }
+            move();
         }
 
-        setInterval(moveVehicles, 2000);
-    </script>
+        // Obter coordenadas da rota calculada
+        routingControl.on('routesfound', function(e) {
+            var routeCoordinates = e.routes[0].coordinates;
+            moveVehicleOnRoute(routeCoordinates);
+        });
+
+        // Atualizar lista de veículos
+        var vehicleList = document.getElementById('vehicle-list');
+        vehicleList.innerHTML = `
+            <div class="vehicle-info">
+                <b>Carro Monitorado</b><br>
+                Modelo: Fiat Strada<br>
+                Placa: XYZ-5678<br>
+                Cor: Branca<br>
+                Velocidade: 60 km/h<br>
+                <span class="vehicle-status">
+                    <span class="status-indicator active"></span>
+                </span>
+            </div>
+        `;
+    </script> 
 </body>
 </html>
