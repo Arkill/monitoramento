@@ -7,6 +7,8 @@
 
     <!-- Adicionando o CSS do Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <link rel="icon" type="image/x-icon" href="img/R.png">
+    <link rel="stylesheet" href="mcss.css">
 
     <style>
         body {
@@ -63,18 +65,7 @@
             gap: 15px;
         }
 
-        .vehicle-info {
-            background-color: #2c2c2c;
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .vehicle-info b {
-            color: #ffffff;
-            font-size: 1.1rem;
-        }
+      
 
         .status-indicator {
             display: inline-block;
@@ -142,13 +133,15 @@
             lineOptions: {
                 styles: [{ color: 'blue', opacity: 0.6, weight: 4 }]
             },
-            createMarker: function() { return null; }, // Desabilitar marcadores automáticos
+            createMarker: function() { return null; },
+            routerOptions: { show: false // Desabilitar a exibição das instruções 
+                }
         }).addTo(map);
 
         // Criar o veículo e mover ao longo da rota
         var vehicleIcon = new L.Icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/194/194261.png',
-            iconSize: [40, 40],
+            iconUrl: 'img/strada.png',
+            iconSize: [60, 40],
             iconAnchor: [20, 40]
         });
 
@@ -160,7 +153,7 @@
                 if (index < routeCoordinates.length) {
                     vehicleMarker.setLatLng(routeCoordinates[index]);
                     index++;
-                    setTimeout(move, 1000); // Intervalo de 1 segundo entre os movimentos
+                    setTimeout(move, 4000); // Intervalo de 1 segundo entre os movimentos
                 }
             }
             move();
