@@ -7,6 +7,7 @@
 
     <!-- Adicionando o CSS do Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="img/R.png">
     <link rel="stylesheet" href="mcss.css">
     <link rel="stylesheet" href="moni.css">
@@ -16,8 +17,7 @@
         <h1>Monitoramento de Veículos em Manaus</h1>
         <nav>
             <ul>
-                <li><a id="back-button" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Voltar</a></li>
-                <li><a id="admin-button" href="admin.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+                <li><a id="admin-button" href="index.html"><i class="fas fa-user-cog"></i> Admin</a></li>
             </ul>
         </nav>
     </header>
@@ -32,160 +32,303 @@
     <div id="additional-sensor-bar">
         <div class="additional-sensor-info">
             <h3>Carro Monitorado</h3>
-            <p><i class="fas fa-map-marker-alt"></i> Endereço: Rua Exemplo, 123</p>
+            <p><i class="fas fa-map-marker-alt"></i> Endereço: <span id="car-address">Atualizando...</span></p>
             <p><i class="fas fa-clock"></i> Horário: 14:30</p>
             <p><i class="fas fa-hourglass-half"></i> Duração da Parada: 15 min</p>
             <p><i class="fas fa-user"></i> Condutor: João Silva</p>
             <p><i class="fas fa-key"></i> Ignição: <span id="car-ignition">Ligada</span></p>
             <p><i class="fas fa-lock"></i> Bloqueio: Desativado</p>
             <p><i class="fas fa-tachometer-alt"></i> Horas do Motor: <span id="car-engine-hours">2h 30min</span></p>
-            <p><i class="fas fa-road"></i> Odômetro: 15000 km</p>
         </div>
         <div class="additional-sensor-info">
             <h3>Moto Monitorada</h3>
-            <p><i class="fas fa-map-marker-alt"></i> Endereço: Avenida Exemplo, 456</p>
+            <p><i class="fas fa-map-marker-alt"></i> Endereço: <span id="bike-address">Atualizando...</span></p>
             <p><i class="fas fa-clock"></i> Horário: 15:00</p>
             <p><i class="fas fa-hourglass-half"></i> Duração da Parada: 10 min</p>
             <p><i class="fas fa-user"></i> Condutor: Maria Souza</p>
-            <p><i class="fas fa-key"></i> Ignição: <span id="bike-ignition">Desligada</span></p>
+            <p><i class="fas fa-key"></i> Ignição: <span id="bike-ignition">Ligada</span></p>
             <p><i class="fas fa-lock"></i> Bloqueio: Ativado</p>
-            <p><i class="fas fa-tachometer-alt"></i> Horas do Motor: <span id="bike-engine-hours">1h 15min</span></p>
-            <p><i class="fas fa-road"></i> Odômetro: 8000 km</p>
-        </div>        
-    </div>
+            <p><i class="fas fa-tachometer-alt"></i> Horas do Motor: <span id="bike-engine-hours">01:15:00</span></p>
+        </div>              
+    </div>    
 
-    <!-- Script do Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
-
-    <script>
-
-var map = L.map('map').setView([-3.119027, -60.021731], 12); // Centralizar o mapa em Manaus
+        <!-- Script do Leaflet -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+        <script>
+    // Inicialização do mapa centralizado em Manaus
+    var map = L.map('map').setView([-3.119027, -60.021731], 12); // Centralizar o mapa em Manaus
 
 // Adicionando o tile layer (usando OpenStreetMap)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 // Função para criar e mover um veículo ao longo de uma rota
-function createVehicle(iconUrl, startCoords, endCoords, vehicleId) {
-    var vehicleIcon = new L.Icon({
-        iconUrl: iconUrl,
-        iconSize: [60, 40],
-        iconAnchor: [20, 40]
+function createVehicle(iconUrl, startCoords, endCoords, vehicleId, vehicleName, vehicleBrand, vehiclePlate) {
+  var vehicleIcon = new L.Icon({
+    iconUrl: iconUrl,
+    iconSize: [60, 40],
+    iconAnchor: [20, 40]
+  });
+
+  var vehicleMarker = L.marker(startCoords, { icon: vehicleIcon }).addTo(map);
+  var popupContent = `
+    <b>Marca:</b> ${vehicleBrand}<br>
+    <b>Nome:</b> ${vehicleName}<br>
+    <b>Placa:</b> ${vehiclePlate}<br>
+    <b>Velocidade:</b> 0 km/h
+  `;
+
+  vehicleMarker.bindPopup(popupContent); // Adiciona o conteúdo ao popup
+
+  var routeLine = L.polyline([], { color: 'blue', weight: 4 }).addTo(map); // Adiciona a linha da rota
+
+  var routingControl = L.Routing.control({
+    waypoints: [
+      L.latLng(startCoords[0], startCoords[1]),
+      L.latLng(endCoords[0], endCoords[1])
+    ],
+    createMarker: function() { return null; },
+    addWaypoints: false,
+    routeWhileDragging: false,
+    draggableWaypoints: false,
+    fitSelectedRoutes: false,
+    show: false,
+    lineOptions: { styles: [{ opacity: 0 }] } // Linha invisível
+  }).addTo(map);
+
+  // Função de Geocodificação Reversa
+  function reverseGeocode(lat, lng, callback) {
+    var url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.address) {
+          callback(data.address);
+        } else {
+          callback(null);
+        }
+      })
+      .catch(error => {
+        console.error('Erro na geocodificação reversa:', error);
+        callback(null);
+      });
+  }
+
+  // Função para atualizar o endereço no veículo
+  function updateVehicleAddress(vehicleId, coords) {
+    reverseGeocode(coords.lat, coords.lng, function(address) {
+      var addressString = 'Endereço não encontrado'; // Valor padrão caso o endereço não seja encontrado
+      if (address) {
+        // Criação do endereço formatado
+        addressString = `${address.road || ''}, ${address.suburb || ''}, ${address.city || ''}, ${address.state || ''}, ${address.country || ''}`;
+      }
+
+      // Atualiza o conteúdo do endereço no veículo
+      document.getElementById(vehicleId).querySelector('.vehicle-address').textContent = addressString;
     });
+  }
 
-    var vehicleMarker = L.marker(startCoords, { icon: vehicleIcon }).addTo(map);
-    vehicleMarker.bindPopup('Velocidade: 0 km/h'); // Não abrir automaticamente, para controle
+  // Função que move o veículo ao longo da rota
+  function moveVehicleOnRoute(routeCoordinates) {
+    var index = 0;
+    
+    function move() {
+      if (index < routeCoordinates.length) {
+        var coords = routeCoordinates[index];
+        vehicleMarker.setLatLng(coords);
+        routeLine.addLatLng(coords); // Adicionar ponto à polilinha
 
-    var routeLine = L.polyline([], { color: 'blue', weight: 4 }).addTo(map); // Adicionar a linha da rota
+        // Atualizar o endereço do veículo
+        updateVehicleAddress(vehicleId, coords);
 
-    var routingControl = L.Routing.control({
-        waypoints: [
-            L.latLng(startCoords[0], startCoords[1]),
-            L.latLng(endCoords[0], endCoords[1])
-        ],
-        createMarker: function() { return null; },
-        addWaypoints: false,
-        routeWhileDragging: false,
-        draggableWaypoints: false,
-        fitSelectedRoutes: false,
-        show: false,
-        lineOptions: {
-            styles: [{ opacity: 0 }] // Linha invisível
+        // Simula variações na velocidade e paradas
+        var delay = Math.random() * 2000 + 1000; // Delay aleatório entre 1 e 3 segundos
+        if (Math.random() < 0.1) { // 10% de chance de parar
+          delay += 3000; // Pausa adicional de 3 segundos
         }
-    }).addTo(map);
 
-    // Função que move o veículo ao longo da rota
-    function moveVehicleOnRoute(routeCoordinates) {
-        var index = 0;
-        function move() {
-            if (index < routeCoordinates.length) {
-                vehicleMarker.setLatLng(routeCoordinates[index]);
-                routeLine.addLatLng(routeCoordinates[index]); // Adicionar ponto à polilinha
+        var speed = Math.floor(Math.random() * 40 + 20); // Velocidade aleatória entre 20 e 60 km/h
+        vehicleMarker.setPopupContent(`
+          <b>Marca:</b> ${vehicleBrand}<br>
+          <b>Nome:</b> ${vehicleName}<br>
+          <b>Placa:</b> ${vehiclePlate}<br>
+          <b>Velocidade:</b> ${speed} km/h
+        `); // Atualiza o popup com a velocidade
 
-                // Simula variações na velocidade e paradas
-                var delay = Math.random() * 2000 + 1000; // Delay aleatório entre 1 e 3 segundos
-                if (Math.random() < 0.1) { // 10% de chance de parar
-                    delay += 3000; // Pausa adicional de 3 segundos
-                }
-
-                var speed = Math.floor(Math.random() * 40 + 20); // Velocidade aleatória entre 20 e 60 km/h
-                vehicleMarker.setPopupContent('Velocidade: ' + speed + ' km/h'); // Atualiza o popup com a velocidade
-
-                // Atualiza a velocidade na lista de veículos
-                document.getElementById(vehicleId).querySelector('.vehicle-speed').textContent = speed + ' km/h';
-
-                index++;
-                setTimeout(move, delay);
-            }
-        }
-        move();
+        // Atualiza a velocidade na lista de veículos
+        document.getElementById(vehicleId).querySelector('.vehicle-speed').textContent = speed + ' km/h';
+        index++;
+        setTimeout(move, delay);
+      }
     }
+    move();
+  }
+    
+        routingControl.on('routesfound', function (e) {
+            var routeCoordinates = e.routes[0].coordinates;
+            moveVehicleOnRoute(routeCoordinates);
+        });
+    }
+    
+    // Adicionar veículos com diferentes rotas
+    createVehicle('img/r15.png', [-3.098264, -59.986498], [-3.119027, -60.021731], 'moto-info');
+    createVehicle('img/Celta.png', [-3.119027, -60.021731], [-3.072237, -60.017906], 'strada-info');
+    
+    // Função para formatar as horas no formato hh:mm:ss
+    function formatHours(hours) {
+        const totalSeconds = Math.floor(hours * 3600);
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+    
+    let carEngineHours = 2.5;
+    let bikeEngineHours = 1.25;
+    
+    
 
-    // Quando a rota for calculada, chama a função para mover o veículo
-    routingControl.on('routesfound', function(e) {
-        var routeCoordinates = e.routes[0].coordinates;
-        moveVehicleOnRoute(routeCoordinates);
-    });
-}
+    function updateEngineHours() {
+    const carIgnition = document.getElementById('car-ignition').innerText.trim();
+    const bikeIgnition = document.getElementById('bike-ignition').innerText.trim();
 
-let carEngineHours = 2.5; // Horas iniciais do motor do carro
-let bikeEngineHours = 1.25; // Horas iniciais do motor da moto
-
-function updateEngineHours() {
-    const carIgnition = document.getElementById('car-ignition').innerText;
-    const bikeIgnition = document.getElementById('bike-ignition').innerText;
-
+    // Atualização das horas do motor do carro
     if (carIgnition === 'Ligada') {
         carEngineHours += 1 / 3600; // Incrementa 1 segundo
         document.getElementById('car-engine-hours').innerText = formatHours(carEngineHours);
+        document.getElementById('car-ignition').classList.remove('blinking');
+        document.querySelector('#strada-info .status-indicator').classList.remove('inactive');
+
+        // Iniciar movimento do veículo, se ainda não estiver em movimento
+        if (!carMoveInterval) {
+            carMoveInterval = moveVehicleOnRoute(carRouteCoordinates, 'strada-info');
+        }
+    } else {
+        document.getElementById('car-ignition').classList.add('blinking');
+        document.querySelector('#strada-info .status-indicator').classList.add('inactive');
+
+        // Parar o movimento do carro
+        if (carMoveInterval) {
+            clearInterval(carMoveInterval);
+            carMoveInterval = null; // Reseta o intervalo
+        }
     }
 
+    // Atualização das horas do motor da moto
     if (bikeIgnition === 'Ligada') {
         bikeEngineHours += 1 / 3600; // Incrementa 1 segundo
         document.getElementById('bike-engine-hours').innerText = formatHours(bikeEngineHours);
+        document.getElementById('bike-ignition').classList.remove('blinking');
+        document.querySelector('#moto-info .status-indicator').classList.remove('inactive');
+
+        // Iniciar movimento da moto, se ainda não estiver em movimento
+        if (!bikeMoveInterval) {
+            bikeMoveInterval = moveVehicleOnRoute(bikeRouteCoordinates, 'moto-info');
+        }
+    } else {
+        document.getElementById('bike-ignition').classList.add('blinking');
+        document.querySelector('#moto-info .status-indicator').classList.add('inactive');
+
+        // Parar o movimento da moto
+        if (bikeMoveInterval) {
+            clearInterval(bikeMoveInterval);
+            bikeMoveInterval = null; // Reseta o intervalo
+        }
     }
 }
 
+// Função para formatar as horas no formato hh:mm:ss
 function formatHours(hours) {
-    const h = Math.floor(hours);
-    const m = Math.floor((hours - h) * 60);
-    return `${h}h ${m}min`;
+    const totalSeconds = Math.floor(hours * 3600);
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-// Atualiza as horas do motor a cada segundo
+// Função para mover o veículo ao longo da rota
+function moveVehicleOnRoute(routeCoordinates, vehicleId) {
+    let index = 0;
+
+    function move() {
+        if (index < routeCoordinates.length) {
+            const coords = routeCoordinates[index];
+            const vehicleMarker = document.getElementById(vehicleId).querySelector('.leaflet-marker-icon');
+            vehicleMarker.setLatLng(coords); // Mover o marcador no mapa
+
+            // Atualizar o endereço do veículo
+            updateVehicleAddress(vehicleId, coords);
+
+            // Incrementar o índice para a próxima posição
+            index++;
+        } else {
+            clearInterval(vehicleMoveInterval); // Para o movimento quando a rota termina
+            vehicleMoveInterval = null;
+        }
+    }
+
+    // Usar setInterval para mover o veículo em intervalos
+    return setInterval(move, 1000); // Retorna o intervalo para permitir parar
+}
+
+// Função para atualizar o endereço do veículo baseado nas coordenadas
+function updateVehicleAddress(vehicleId, coords) {
+    // Implemente a lógica para obter o endereço com base nas coordenadas, se necessário
+    console.log(`Atualizando endereço do veículo ${vehicleId} para: ${coords}`);
+}
+
+// Inicializar a função de atualização das horas do motor
 setInterval(updateEngineHours, 1000);
+    
+    setInterval(updateEngineHours, 1000);
 
-// Adicionar veículos com diferentes rotas
-createVehicle('img/r15.png', [-3.098264, -59.986498], [-3.119027, -60.021731], 'moto-info'); // Moto de São José Operário para o Centro de Manaus
-createVehicle('img/Celta.png', [-3.119027, -60.021731], [-3.072237, -60.017906], 'strada-info'); // Carro de Avenida Autaz Mirim para Ponta Negra
+        // Atualizar lista de veículos
+        var vehicleList = document.getElementById('vehicle-list');
+        vehicleList.innerHTML = `
+            <div id="strada-info" class="vehicle-info">
+                <b>Carro Monitorado</b><br>
+                Modelo: Chevrolet Celta<br>
+                Placa: XYZ-5678<br>
+                Cor: Branca<br>
+                Velocidade: <span class="vehicle-speed">0 km/h</span><br>
+                <span class="vehicle-status">
+                    <span class="status-indicator active"></span>
+                </span>
+            </div>
+            <div id="moto-info" class="vehicle-info">
+                <b>Moto Monitorada</b><br>
+                Modelo: Yamaha R15<br>
+                Placa: ABC-1234<br>
+                Cor: Azul<br>
+                Velocidade: <span class="vehicle-speed">0 km/h</span><br>
+                <span class="vehicle-status">
+                    <span class="status-indicator active"></span>
+                </span>
+            </div>
+        `;
 
-// Atualizar lista de veículos
-var vehicleList = document.getElementById('vehicle-list');
-vehicleList.innerHTML = `
-    <div id="strada-info" class="vehicle-info">
-        <b>Carro Monitorado</b><br>
-        Modelo: Chevrolet Celta<br>
-        Placa: XYZ-5678<br>
-        Cor: Branca<br>
-        Velocidade: <span class="vehicle-speed">0 km/h</span><br>
-        <span class="vehicle-status">
-            <span class="status-indicator active"></span>
-        </span>
-    </div>
-    <div id="moto-info" class="vehicle-info">
-        <b>Moto Monitorada</b><br>
-        Modelo: Yamaha R15<br>
-        Placa: ABC-1234<br>
-        Cor: Azul<br>
-        Velocidade: <span class="vehicle-speed">0 km/h</span><br>
-        <span class="vehicle-status">
-            <span class="status-indicator active"></span>
-        </span>
-    </div>
-`;
+        function reverseGeocode(lat, lng, callback) {
+    var url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
 
-</script> 
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verificar o que está sendo retornado
+            if (data && data.address) {
+                callback(data.address);
+            } else {
+                console.log("Endereço não encontrado."); // Adicionando um log para melhor rastreamento
+                callback(null);
+            }
+        })
+        .catch(error => {
+            console.error('Erro na geocodificação reversa:', error);
+            callback(null);
+        });
+}
+
+    </script>
 </body>
 </html>

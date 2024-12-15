@@ -168,6 +168,14 @@ nav ul li a i {
 .additional-sensor-info p {
     margin: 5px 0;
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.additional-sensor-info p i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    color: #00bcd4;
 }
 
 #map {
