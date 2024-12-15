@@ -9,106 +9,49 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
     <link rel="icon" type="image/x-icon" href="img/R.png">
     <link rel="stylesheet" href="mcss.css">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-        }
-
-        header {
-            background-color: #1f1f1f;
-            color: #ffffff;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-
-        #back-button {
-            background-color: #ffffff;
-            color: #1f1f1f;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 1rem;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        #back-button:hover {
-            background-color: #e6e6e6;
-        }
-
-        #map {
-            height: 70vh;
-            width: 100%;
-        }
-
-        #sidebar {
-            background-color: #1f1f1f;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #vehicle-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-      
-
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-left: 5px;
-            animation: blink 1s infinite;
-        }
-
-        .status-indicator.active {
-            background-color: green;
-        }
-
-        .status-indicator.inactive {
-            background-color: red;
-        }
-
-        @keyframes blink {
-            0%, 50% {
-                opacity: 1;
-            }
-            50%, 100% {
-                opacity: 0.3;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="moni.css">
 </head>
 <body>
-
-    <!-- Cabeçalho com o botão de Voltar -->
     <header>
         <h1>Monitoramento de Veículos em Manaus</h1>
-        <a id="back-button" href="javascript:history.back()">Voltar</a>
+        <nav>
+            <ul>
+                <li><a id="back-button" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Voltar</a></li>
+                <li><a id="admin-button" href="admin.html"><i class="fas fa-user-cog"></i> Admin</a></li>
+            </ul>
+        </nav>
     </header>
-
-    <!-- Container do Mapa -->
     <div id="map"></div>
-
-    <!-- Sidebar (Painel de informações) -->
+    <div id="sidebar-handle"></div>
     <div id="sidebar">
         <h2>Informações dos Veículos</h2>
-        <div id="vehicle-list"></div>
+        <div id="vehicle-list">
+            <!-- Informações dos veículos adicionadas dinamicamente -->
+        </div>
+    </div>
+    <div id="additional-sensor-bar">
+        <div class="additional-sensor-info">
+            <h3>Carro Monitorado</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Endereço: Rua Exemplo, 123</p>
+            <p><i class="fas fa-clock"></i> Horário: 14:30</p>
+            <p><i class="fas fa-hourglass-half"></i> Duração da Parada: 15 min</p>
+            <p><i class="fas fa-user"></i> Condutor: João Silva</p>
+            <p><i class="fas fa-key"></i> Ignição: <span id="car-ignition">Ligada</span></p>
+            <p><i class="fas fa-lock"></i> Bloqueio: Desativado</p>
+            <p><i class="fas fa-tachometer-alt"></i> Horas do Motor: <span id="car-engine-hours">2h 30min</span></p>
+            <p><i class="fas fa-road"></i> Odômetro: 15000 km</p>
+        </div>
+        <div class="additional-sensor-info">
+            <h3>Moto Monitorada</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Endereço: Avenida Exemplo, 456</p>
+            <p><i class="fas fa-clock"></i> Horário: 15:00</p>
+            <p><i class="fas fa-hourglass-half"></i> Duração da Parada: 10 min</p>
+            <p><i class="fas fa-user"></i> Condutor: Maria Souza</p>
+            <p><i class="fas fa-key"></i> Ignição: <span id="bike-ignition">Desligada</span></p>
+            <p><i class="fas fa-lock"></i> Bloqueio: Ativado</p>
+            <p><i class="fas fa-tachometer-alt"></i> Horas do Motor: <span id="bike-engine-hours">1h 15min</span></p>
+            <p><i class="fas fa-road"></i> Odômetro: 8000 km</p>
+        </div>        
     </div>
 
     <!-- Script do Leaflet -->
@@ -116,69 +59,133 @@
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
     <script>
-        // Inicializando o mapa com Leaflet, centralizando em Manaus
-        var map = L.map('map').setView([-3.119027, -60.212467], 12);
 
-        // Adicionando o tile layer (usando OpenStreetMap)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+var map = L.map('map').setView([-3.119027, -60.021731], 12); // Centralizar o mapa em Manaus
 
-        // Configuração da rota entre São José Operário e FAMETRO Chapada
-        var routingControl = L.Routing.control({
-            waypoints: [
-                L.latLng(-3.098264, -59.986498), // Coordenadas de São José Operário
-                L.latLng(-3.083526, -60.042486)  // Coordenadas da FAMETRO Chapada
-            ],
-            lineOptions: {
-                styles: [{ color: 'blue', opacity: 0.6, weight: 4 }]
-            },
-            createMarker: function() { return null; },
-            routerOptions: { show: false // Desabilitar a exibição das instruções 
-                }
-        }).addTo(map);
+// Adicionando o tile layer (usando OpenStreetMap)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-        // Criar o veículo e mover ao longo da rota
-        var vehicleIcon = new L.Icon({
-            iconUrl: 'img/strada.png',
-            iconSize: [60, 40],
-            iconAnchor: [20, 40]
-        });
+// Função para criar e mover um veículo ao longo de uma rota
+function createVehicle(iconUrl, startCoords, endCoords, vehicleId) {
+    var vehicleIcon = new L.Icon({
+        iconUrl: iconUrl,
+        iconSize: [60, 40],
+        iconAnchor: [20, 40]
+    });
 
-        var vehicleMarker = L.marker([-3.098264, -59.986498], { icon: vehicleIcon }).addTo(map);
+    var vehicleMarker = L.marker(startCoords, { icon: vehicleIcon }).addTo(map);
+    vehicleMarker.bindPopup('Velocidade: 0 km/h'); // Não abrir automaticamente, para controle
 
-        function moveVehicleOnRoute(routeCoordinates) {
-            var index = 0;
-            function move() {
-                if (index < routeCoordinates.length) {
-                    vehicleMarker.setLatLng(routeCoordinates[index]);
-                    index++;
-                    setTimeout(move, 4000); // Intervalo de 1 segundo entre os movimentos
-                }
-            }
-            move();
+    var routeLine = L.polyline([], { color: 'blue', weight: 4 }).addTo(map); // Adicionar a linha da rota
+
+    var routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(startCoords[0], startCoords[1]),
+            L.latLng(endCoords[0], endCoords[1])
+        ],
+        createMarker: function() { return null; },
+        addWaypoints: false,
+        routeWhileDragging: false,
+        draggableWaypoints: false,
+        fitSelectedRoutes: false,
+        show: false,
+        lineOptions: {
+            styles: [{ opacity: 0 }] // Linha invisível
         }
+    }).addTo(map);
 
-        // Obter coordenadas da rota calculada
-        routingControl.on('routesfound', function(e) {
-            var routeCoordinates = e.routes[0].coordinates;
-            moveVehicleOnRoute(routeCoordinates);
-        });
+    // Função que move o veículo ao longo da rota
+    function moveVehicleOnRoute(routeCoordinates) {
+        var index = 0;
+        function move() {
+            if (index < routeCoordinates.length) {
+                vehicleMarker.setLatLng(routeCoordinates[index]);
+                routeLine.addLatLng(routeCoordinates[index]); // Adicionar ponto à polilinha
 
-        // Atualizar lista de veículos
-        var vehicleList = document.getElementById('vehicle-list');
-        vehicleList.innerHTML = `
-            <div class="vehicle-info">
-                <b>Carro Monitorado</b><br>
-                Modelo: Fiat Strada<br>
-                Placa: XYZ-5678<br>
-                Cor: Branca<br>
-                Velocidade: 60 km/h<br>
-                <span class="vehicle-status">
-                    <span class="status-indicator active"></span>
-                </span>
-            </div>
-        `;
-    </script> 
+                // Simula variações na velocidade e paradas
+                var delay = Math.random() * 2000 + 1000; // Delay aleatório entre 1 e 3 segundos
+                if (Math.random() < 0.1) { // 10% de chance de parar
+                    delay += 3000; // Pausa adicional de 3 segundos
+                }
+
+                var speed = Math.floor(Math.random() * 40 + 20); // Velocidade aleatória entre 20 e 60 km/h
+                vehicleMarker.setPopupContent('Velocidade: ' + speed + ' km/h'); // Atualiza o popup com a velocidade
+
+                // Atualiza a velocidade na lista de veículos
+                document.getElementById(vehicleId).querySelector('.vehicle-speed').textContent = speed + ' km/h';
+
+                index++;
+                setTimeout(move, delay);
+            }
+        }
+        move();
+    }
+
+    // Quando a rota for calculada, chama a função para mover o veículo
+    routingControl.on('routesfound', function(e) {
+        var routeCoordinates = e.routes[0].coordinates;
+        moveVehicleOnRoute(routeCoordinates);
+    });
+}
+
+let carEngineHours = 2.5; // Horas iniciais do motor do carro
+let bikeEngineHours = 1.25; // Horas iniciais do motor da moto
+
+function updateEngineHours() {
+    const carIgnition = document.getElementById('car-ignition').innerText;
+    const bikeIgnition = document.getElementById('bike-ignition').innerText;
+
+    if (carIgnition === 'Ligada') {
+        carEngineHours += 1 / 3600; // Incrementa 1 segundo
+        document.getElementById('car-engine-hours').innerText = formatHours(carEngineHours);
+    }
+
+    if (bikeIgnition === 'Ligada') {
+        bikeEngineHours += 1 / 3600; // Incrementa 1 segundo
+        document.getElementById('bike-engine-hours').innerText = formatHours(bikeEngineHours);
+    }
+}
+
+function formatHours(hours) {
+    const h = Math.floor(hours);
+    const m = Math.floor((hours - h) * 60);
+    return `${h}h ${m}min`;
+}
+
+// Atualiza as horas do motor a cada segundo
+setInterval(updateEngineHours, 1000);
+
+// Adicionar veículos com diferentes rotas
+createVehicle('img/r15.png', [-3.098264, -59.986498], [-3.119027, -60.021731], 'moto-info'); // Moto de São José Operário para o Centro de Manaus
+createVehicle('img/Celta.png', [-3.119027, -60.021731], [-3.072237, -60.017906], 'strada-info'); // Carro de Avenida Autaz Mirim para Ponta Negra
+
+// Atualizar lista de veículos
+var vehicleList = document.getElementById('vehicle-list');
+vehicleList.innerHTML = `
+    <div id="strada-info" class="vehicle-info">
+        <b>Carro Monitorado</b><br>
+        Modelo: Chevrolet Celta<br>
+        Placa: XYZ-5678<br>
+        Cor: Branca<br>
+        Velocidade: <span class="vehicle-speed">0 km/h</span><br>
+        <span class="vehicle-status">
+            <span class="status-indicator active"></span>
+        </span>
+    </div>
+    <div id="moto-info" class="vehicle-info">
+        <b>Moto Monitorada</b><br>
+        Modelo: Yamaha R15<br>
+        Placa: ABC-1234<br>
+        Cor: Azul<br>
+        Velocidade: <span class="vehicle-speed">0 km/h</span><br>
+        <span class="vehicle-status">
+            <span class="status-indicator active"></span>
+        </span>
+    </div>
+`;
+
+</script> 
 </body>
 </html>
