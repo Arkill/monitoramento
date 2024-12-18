@@ -1,93 +1,56 @@
-<!doctype html>
-<html lang="pt" class="no-js" itemscope itemtype="http://schema.org/WebSite">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <title>Gestão de Plataformas</title>
-    <base href="https://rkr.center">
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="app-version" content="3.7.8">
-    <meta name="app-build" content="202410011210020345">
-    <meta name="csrf-token" content="xLpnuISzp4SW5r9vXBBAeGNEPVcjCdqAA3AiOrSv">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Faça o monitoramento e rastreamento da sua frota.">
-    <link rel="shortcut icon" href="https://rkr.center/images/favicon.ico?t=1589256855" type="image/x-icon">
-    <link rel="stylesheet" href="https://rkr.center/assets/css/dark-orange.css?t=1727784604">
-    <link rel="stylesheet" href="https://rkr.center/assets/custom/css.css?t=1635620361">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST - Sistema de Monitoramento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600;400;700&display=swap" rel="stylesheet">
+</head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="sign-in-layout">
-    <div class="center-vertical">
-        <div class="container">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-                <h1 class="sign-in-text text-center">⠀⠀⠀⠀</h1>
-                <div class="panel">
-                    <div class="panel-background"></div>
-                    <div class="panel-body">
-                        <a href="https://rkr.center">
-                            <img class="img-responsive center-block" src="https://rkr.center/images/logo-main.png?t=1596649849" alt="Logo">
-                        </a>
-                        <hr>
-                        <form id="loginForm" class="form">
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Email" id="email" name="email" type="email" required>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Senha" id="password" name="password" type="password" required>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input checked="checked" name="remember_me" type="checkbox" value="1">
-                                    <label>Lembre-me</label>
-                                </div>
-                            </div>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
-                            <hr>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <a href="https://rkr.center/password_reminder" class="btn btn-block btn-lg btn-default">Recuperar a senha</a>
-                                    </div>
-                                    <div class="col-sm-12"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+<body>
+    <div id="container">
+        <section>
+            <article>
+                <div class="inner">
+                    <h1>Bem-vindo</h1>
+                    <p>Para manter-se conectado conosco, faça login com suas credenciais</p>
+                    <a href="" class="btn">Entrar</a>
                 </div>
-            </div>
-        </div>
+            </article>
+            <aside>
+                <div class="inner">
+                    <h2>Criar Conta</h2>
+                    <nav id="socialLogin">
+                        <a href="" class="google">
+                            <img src="img/google.svg" alt="Google">
+                        </a>
+                        <a href="" class="github">
+                            <img src="img/facebook.svg" alt="Facebook">
+                        </a>
+                        <a href="" class="linkedin">
+                            <img src="img/linkedin.svg" alt="LinkedIn">
+                        </a>                        
+                    </nav>
+                    <p>ou use seu e-mail para registrar-se</p>
+                    <form action="" method="post">
+                        <input type="text" placeholder="Nome Completo" required />
+                        <input type="email" placeholder="E-mail" required />
+                        <input type="password" placeholder="Senha" required />
+                        <button type="submit">Registrar</button>
+                    </form>
+                </div>
+            </aside>
+        </section>
     </div>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                const response = await fetch('http://localhost:5000/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-
-                if (data.token) {
-                    // Aqui você pode armazenar o token em localStorage ou cookies
-                    alert('Login bem-sucedido');
-                    localStorage.setItem('token', data.token); // Salvar token no localStorage
-                    window.location.href = '/dashboard'; // Redireciona para a página de dashboard ou qualquer outra
-                } else {
-                    alert(data.message); // Mensagem de erro
-                }
-            } catch (error) {
-                console.error('Erro ao fazer login:', error);
-                alert('Erro ao conectar com o servidor.');
-            }
-        });
-    </script>
 </body>
 </html>

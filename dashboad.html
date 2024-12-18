@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Monitoramento de Veículos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="dashstyle.css">
+</head>
+<body>
+    <div id="container">
+        <div class="inner">
+            <header class="text-center mb-4">
+                <h1>Dashboard de Monitoramento de Veículos</h1>
+                <p class="text-muted">Acompanhe o desempenho e localização dos veículos em tempo real.</p>
+            </header>
+
+            <!-- Informações sobre os veículos -->
+            <section class="mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <article class="card p-3">
+                            <h2>Moto R15</h2>
+                            <p>Velocidade Atual: <span id="speedR15">50</span> km/h</p>
+                            <p>Status: <span class="text-success">Em movimento</span></p>
+                            <p>Última Localização: <span id="locationR15">-3.119027, -60.021731</span></p>
+                        </article>
+                    </div>
+                    <div class="col-md-6">
+                        <article class="card p-3">
+                            <h2>Carro Celta</h2>
+                            <p>Velocidade Atual: <span id="speedCelta">60</span> km/h</p>
+                            <p>Status: <span class="text-success">Em movimento</span></p>
+                            <p>Última Localização: <span id="locationCelta">-3.072237, -60.017906</span></p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Listagem de clientes -->
+            <section class="mb-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <aside class="card p-3">
+                            <h3>Clientes Normais</h3>
+                            <ul id="normalClients">
+                                <li>João Silva</li>
+                                <li>Maria Oliveira</li>
+                                <li>Lucas Santos</li>
+                            </ul>
+                        </aside>
+                    </div>
+                    <div class="col-md-4">
+                        <aside class="card p-3">
+                            <h3>Clientes Cancelados</h3>
+                            <ul id="cancelledClients">
+                                <li>Ana Costa</li>
+                                <li>Bruno Lima</li>
+                            </ul>
+                        </aside>
+                    </div>
+                    <div class="col-md-4">
+                        <aside class="card p-3">
+                            <h3>Clientes VIP</h3>
+                            <ul id="vipClients">
+                                <li>Carlos Souza</li>
+                                <li>Fernanda Reis</li>
+                                <li>Mariana Duarte</li>
+                            </ul>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mapa para monitoramento -->
+            <section class="mb-4">
+                <h3>Localização em Tempo Real</h3>
+                <div id="map" style="height: 500px; border: 1px solid #ddd;"></div>
+            </section>
+
+            <!-- Gráficos de desempenho -->
+            <section>
+                <h3>Indicadores de Desempenho</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <canvas id="avgSpeedChart"></canvas>
+                        <p class="text-center">Velocidade Média</p>
+                    </div>
+                    <div class="col-md-4">
+                        <canvas id="distanceChart"></canvas>
+                        <p class="text-center">Distância Percorrida</p>
+                    </div>
+                    <div class="col-md-4">
+                        <canvas id="activityChart"></canvas>
+                        <p class="text-center">Atividades Recentes</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="mapdash.js"></script>
+    <script src="dashjava.js"></script>
+</body>
+</html>

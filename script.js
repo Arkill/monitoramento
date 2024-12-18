@@ -44,4 +44,16 @@ function deleteSelected() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Obter o checkbox de "Selecionar todos"
+    const selectAllCheckbox = document.getElementById('select-all');
+    // Obter todos os checkboxes da tabela
+    const checkboxes = document.querySelectorAll('.checkbox-item');
 
+    // Adicionar evento de clique para o checkbox "Selecionar todos"
+    selectAllCheckbox.addEventListener('change', function() {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = selectAllCheckbox.checked; // Marca todos os checkboxes com base no estado de "Selecionar todos"
+        });
+    });
+});

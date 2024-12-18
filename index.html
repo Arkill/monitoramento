@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>TestADM - Gestão de Plataformas</title>
+    <title>Sentinela - Sistema de Monitoramento</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="app-version" content="0.0.1 (Alpha)">
     <meta name="csrf-token" content="xLpnuISzp4SW5r9vXBBAeGNEPVcjCdqAA3AiOrSv">
@@ -17,124 +17,155 @@
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Layout</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="CSS Checkbox/style.css">
+</head>
 <body class="admin-layout">
+    
     <div class="header">
         <!-- Barra de navegação principal -->
         <nav class="navbar navbar-main navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                     <!-- Botão para colapsar a navegação em telas menores -->
-                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                     data-target="#bs-header-navbar-collapse" aria-expanded="false">
-                     <span class="sr-only">Toggle navigation</span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                 </button>
+          <div class="container-fluid">
+            <!-- Cabeçalho da barra -->
+            <div class="navbar-header">
+              <!-- Botão de colapso para dispositivos menores -->
+              <button type="button" class="navbar-toggle collapsed" 
+                      data-toggle="collapse" 
+                      data-target="#bs-header-navbar-collapse" 
+                      aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+      
+              <!-- Logo -->
+              <a class="navbar-brand" href="javascript:">
+                <img src="img/R.png" alt="Logo">
+              </a>
+              <!-- Texto de identificação -->
+              <p class="navbar-text">ADMIN</p>
+            </div>
+      
+            <!-- Itens da barra de navegação -->
+            <div class="collapse navbar-collapse" id="bs-header-navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <!-- Mapa -->
+                <li>
+                  <a href="moni.html">
+                    <span class="text">Mapa</span>
+                  </a>
+                </li>
+      
+                <!-- Usuários -->
+                <li class="active">
+                  <a href="#">
+                    <span class="text">Usuários (27)</span>
+                  </a>
+                </li>
+      
+                <!-- Dispositivos -->
+                <li>
+                  <a href="#">
+                    <span class="text">Dispositivos (9/14)</span>
+                  </a>
+                </li>
+      
+                <!-- Conteúdo - Dropdown -->
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Conteúdo <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="email_templates.html"><span class="text">Modelos de email</span></a></li>
+                    <li><a href="sms_templates.html"><span class="text">Modelos de SMS</span></a></li>
+                    <li><a href="companies.html"><span class="text">Empresas</span></a></li>
+                  </ul>
+                </li>
+      
+                <!-- Personalização -->
+                <li>
+                  <a href="settings.html">
+                    <i class="icon setup"></i>
+                    <span class="text">Personalização</span>
+                  </a>
+                </li>
+      
+                <!-- Logs - Dropdown -->
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon logs"></i>
+                    <span class="text">Logs</span>
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="report_logs.html">
+                        <span class="text">Registro de relatório agendado</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+      
+                <!-- Menu de Usuário -->
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    atendim@ajuda <i class="caret"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="login.html">
+                        <i class="icon logout"></i>
+                        <span class="text">Sair</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>      
 
-                    <!-- Logo da marca -->
-                    <a class="navbar-brand" href="javascript:">
-                        <img src="img/R.png">
-                    </a>
+    <!-- Conteúdo Principal -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="panel panel-default" id="table_clients">
+                <!-- Filtros ocultos para ordenação -->
+                <input type="hidden" name="sorting[sort_by]" value="email" data-filter>
+                <input type="hidden" name="sorting[sort]" value="asc" data-filter>
 
-                    <!-- Texto de identificação do usuário -->
-                    <p class="navbar-text">ADMIN</p>
+                <div class="panel-heading">
+                    <!-- Botões de ações no canto direito -->
+                    <ul class="nav nav-tabs nav-icons pull-right">
+                        <!-- Botão de adicionar novo usuário -->
+                        <li role="presentation">
+                            <a href="javascript:" type="button" data-modal="clients_create" data-url="cadastro.html" class="action-button" title="Adicionar Usuário">
+                                <i class="fa fa-user-plus"></i>
+                            </a>
+                        </li>
+                        <!-- Botão de adicionar novo dispositivo -->
+                        <li role="presentation">
+                            <a href="javascript:" type="button" data-modal="devices_create" data-url="cadastro_dispositivo.html" class="action-button" title="Adicionar Dispositivo">
+                                <i class="fa fa-mobile"></i>
+                            </a>
+                        </li>
+                        <!-- Botão de importar dispositivos -->
+                        <li role="presentation">
+                            <a href="javascript:" type="button" data-modal="import_devices" data-url="importar_dispositivos.html" class="action-button" title="Importar Dispositivos">
+                                <i class="fa fa-upload"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-<!-- Barra de navegação -->
-<div class="collapse navbar-collapse" id="bs-header-navbar-collapse">
-    <ul class="nav navbar-nav navbar-right">
-        <!-- Link do Mapa -->
-        <li>
-            <a href="moni.html">
-                <span class="text">Mapa</span>
-            </a>
-        </li>
-        
-        <!-- Link de Usuários -->
-        <li class="active">
-            <a href="#">
-                <span class="text">Usuários (27)</span>
-            </a>
-        </li>
-        
-        <!-- Link de Dispositivos -->
-        <li>
-            <a href="#">
-                <span class="text">Dispositivos (9/14)</span>
-            </a>
-        </li>
-        
-        <!-- Menu suspenso de Conteúdo -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Conteúdo <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="email_templates.html"><span class="text">Modelos de email</span></a></li>
-                <li><a href="sms_templates.html"><span class="text">Modelos de SMS</span></a></li>
-                <li><a href="companies.html"><span class="text">Empresas</span></a></li>
-            </ul>
-        </li>
-        
-        <!-- Link de Personalização -->
-        <li>
-            <a href="settings.html">
-                <i class="icon setup"></i> <span class="text">Personalização</span>
-            </a>
-        </li>
-        
-        <!-- Menu suspenso de Logs -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="icon logs"></i> <span class="text">Logs</span> <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="report_logs.html"><span class="text">Registro de relatório agendado</span></a></li>
-            </ul>
-        </li>
-        
-        <!-- Menu suspenso de Usuário -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                atendim@ajuda <i class="caret"></i>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="login.html"><i class="icon logout"></i><span class="text">Sair</span></a></li>
-            </ul>
-        </li>
-    </ul>
-</div>
-<!-- Conteúdo Principal -->
-<div class="content">
-    <div class="container-fluid">
-        <div class="panel panel-default" id="table_clients">
-            <!-- Filtros ocultos para ordenação -->
-            <input type="hidden" name="sorting[sort_by]" value="email" data-filter>
-            <input type="hidden" name="sorting[sort]" value="asc" data-filter>
-
-            <div class="panel-heading">
-                <!-- Botões de ações no canto direito -->
-                <ul class="nav nav-tabs nav-icons pull-right">
-                    <!-- Botão de adicionar novo usuário -->
-                    <li role="presentation">
-                        <a href="javascript:" type="button" data-modal="clients_create" data-url="cadastro.html" class="action-button" title="Adicionar Usuário">
-                            <i class="fa fa-user-plus"></i>
-                        </a>
-                    </li>
-                    <!-- Botão de adicionar novo dispositivo -->
-                    <li role="presentation">
-                        <a href="javascript:" type="button" data-modal="devices_create" data-url="cadastro_dispositivo.html" class="action-button" title="Adicionar Dispositivo">
-                            <i class="fa fa-mobile"></i>
-                        </a>
-                    </li>
-                    <!-- Botão de importar dispositivos -->
-                    <li role="presentation">
-                        <a href="javascript:" type="button" data-modal="import_devices" data-url="importar_dispositivos.html" class="action-button" title="Importar Dispositivos">
-                            <i class="fa fa-upload"></i>
-                        </a>
-                    </li>
-                </ul>
+            </div>
 
                 <!-- Título do painel -->
                 <div class="panel-title">
@@ -205,7 +236,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td><span class="label-danger">Inativo</span></td>
                                         <td>janedoe@example.com</td>
                                         <td>0</td>
                                         <td>2</td>
@@ -235,7 +266,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td><span class="label-success">Ativo</span></td>
                                         <td>alex@example.com</td>
                                         <td>1</td>
                                         <td>3</td>
@@ -265,7 +296,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td><span class="label-danger">Inativo</span></td>
                                         <td>mark@example.com</td>
                                         <td>3</td>
                                         <td>1</td>
@@ -295,7 +326,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td><span class="label-success">Ativo</span></td>
                                         <td>emily@example.com</td>
                                         <td>4</td>
                                         <td>3</td>
@@ -325,7 +356,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td><span class="label-danger">Inativo</span></td>
                                         <td>frank@example.com</td>
                                         <td>2</td>
                                         <td>6</td>
@@ -355,7 +386,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td><span class="label-success">Ativo</span></td>
                                         <td>george@example.com</td>
                                         <td>6</td>
                                         <td>8</td>
@@ -385,7 +416,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td><span class="label-danger">Inativo</span></td>
                                         <td>helen@example.com</td>
                                         <td>5</td>
                                         <td>9</td>
@@ -415,7 +446,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-success">Ativo</span></td>
+                                        <td><span class="label-success">Ativo</span></td>
                                         <td>ian@example.com</td>
                                         <td>7</td>
                                         <td>11</td>
@@ -445,7 +476,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td><span class="label-warning label-danger">Inativo</span></td>
+                                        <td><span class="label-danger">Inativo</span></td>
                                         <td>julia@example.com</td>
                                         <td>8</td>
                                         <td>12</td>
@@ -481,7 +512,7 @@
     
         <!-- Informações do sistema -->
         <div class="footer-info mb-3">
-            <p>&copy; 2024 <strong>TestADM</strong> | Versão 0.0.1 (Alpha)</p>
+            <p>&copy; 2024 <strong>Sentinela - Monitoramento de Veicúlos</strong> | Versão 0.0.1 (Alpha)</p>
             <p>Última atualização: 08 de Dezembro de 2024</p>
         </div>
     
@@ -494,54 +525,72 @@
 </body>
 
 <script src="Pure Animated CSS Modal/Pure Animated CSS Modal/main.js"></script>
-
+ 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para alternar o menu suspenso de configurações
     function toggleSettingsDropdown() {
-        var dropdown = document.getElementById("settings-dropdown-menu");
-        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        const dropdown = document.getElementById("settings-dropdown-menu");
+        if (dropdown) {
+            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        }
     }
 
     // Fechar o dropdown se clicar fora dele
     document.addEventListener("click", function(event) {
-        var dropdown = document.getElementById("settings-dropdown-menu");
-        var button = document.querySelector(".btn-group button");
-        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+        const dropdown = document.getElementById("settings-dropdown-menu");
+        const button = document.querySelector(".btn-group button");
+        if (dropdown && !dropdown.contains(event.target) && button && !button.contains(event.target)) {
             dropdown.style.display = "none";
         }
     });
-</script>
 
-<script>
-    // Fecha o dropdown se o usuário clicar fora dele
-document.addEventListener('click', function(event) {
-  var dropdown = document.querySelector('.dropdown-menu');
-  var isClickInside = dropdown.contains(event.target) || event.target.closest('.navbar-nav > li');
-
-  if (!isClickInside) {
-    dropdown.style.display = 'none';
-  }
-});
-</script>
-<script>
     // Obter o checkbox de "Selecionar todos"
     const selectAllCheckbox = document.getElementById('select-all');
     // Obter todos os checkboxes da tabela
     const checkboxes = document.querySelectorAll('.checkbox-item');
 
     // Adicionar evento de clique para o checkbox "Selecionar todos"
-    selectAllCheckbox.addEventListener('change', function() {
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAllCheckbox.checked; // Marca todos os checkboxes com base no estado de "Selecionar todos"
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked; // Marca todos os checkboxes com base no estado de "Selecionar todos"
+            });
         });
-    });
-</script>
+    }
 
-<script>if (error) {
-    document.querySelector('.table_error').textContent = "Erro ao carregar dados. Tente novamente.";
-    document.querySelector('.table_error').style.display = 'block';
-}
+    // Exibir mensagem de erro se houver erro
+    if (typeof error !== 'undefined' && error) { // Certifica-se de que 'error' está definido
+        const errorElement = document.querySelector('.table_error');
+        if (errorElement) {
+            errorElement.textContent = "Erro ao carregar dados. Tente novamente.";
+            errorElement.style.display = 'block';
+        }
+    }
+
+    // Alternar a classe 'in' para o menu de navegação ao clicar no botão de hambúrguer
+    const navbarToggle = document.querySelector('.navbar-toggle');
+    if (navbarToggle) {
+        navbarToggle.addEventListener('click', function() {
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            if (navbarCollapse) {
+                navbarCollapse.classList.toggle('in');
+            }
+        });
+    }
+});
+
+// Função para selecionar/deselecionar todos os checkboxes
+function toggleSelectAll(source) {
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked;
+        });
+    }
+
 </script>
 
 <script src="drop.js""></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </html> 
