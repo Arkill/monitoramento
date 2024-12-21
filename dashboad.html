@@ -11,96 +11,93 @@
 <body>
     <div id="container">
         <div class="inner">
-            <header class="text-center mb-4">
-                <h1>Dashboard de Monitoramento de Veículos</h1>
-                <p class="text-muted">Acompanhe o desempenho e localização dos veículos em tempo real.</p>
-            </header>
+            <h1 class="text-center">Dashboard de Monitoramento de Veículos</h1>
 
-            <!-- Informações sobre os veículos -->
-            <section class="mb-4">
-                <div class="row">
-                    <div class="col-md-6">
-                        <article class="card p-3">
-                            <h2>Moto R15</h2>
-                            <p>Velocidade Atual: <span id="speedR15">50</span> km/h</p>
-                            <p>Status: <span class="text-success">Em movimento</span></p>
-                            <p>Última Localização: <span id="locationR15">-3.119027, -60.021731</span></p>
-                        </article>
-                    </div>
-                    <div class="col-md-6">
-                        <article class="card p-3">
-                            <h2>Carro Celta</h2>
-                            <p>Velocidade Atual: <span id="speedCelta">60</span> km/h</p>
-                            <p>Status: <span class="text-success">Em movimento</span></p>
-                            <p>Última Localização: <span id="locationCelta">-3.072237, -60.017906</span></p>
-                        </article>
-                    </div>
-                </div>
-            </section>
+            <!-- Seção de Clientes -->
+<section class="client-section">
+    <div class="client-category">
+        <h2><i class="fas fa-users"></i> Clientes Ativos</h2>
+        <ul id="activeClients" class="client-list">
+            <li><i class="fas fa-check-circle"></i> Cliente A - Último uso: 10 min atrás</li>
+            <li><i class="fas fa-check-circle"></i> Cliente B - Último uso: 1 hora atrás</li>
+            <li><i class="fas fa-check-circle"></i> Cliente C - Último uso: 30 min atrás</li>
+        </ul>
+    </div>
 
-            <!-- Listagem de clientes -->
-            <section class="mb-4">
-                <div class="row">
-                    <div class="col-md-4">
-                        <aside class="card p-3">
-                            <h3>Clientes Normais</h3>
-                            <ul id="normalClients">
-                                <li>João Silva</li>
-                                <li>Maria Oliveira</li>
-                                <li>Lucas Santos</li>
-                            </ul>
-                        </aside>
-                    </div>
-                    <div class="col-md-4">
-                        <aside class="card p-3">
-                            <h3>Clientes Cancelados</h3>
-                            <ul id="cancelledClients">
-                                <li>Ana Costa</li>
-                                <li>Bruno Lima</li>
-                            </ul>
-                        </aside>
-                    </div>
-                    <div class="col-md-4">
-                        <aside class="card p-3">
-                            <h3>Clientes VIP</h3>
-                            <ul id="vipClients">
-                                <li>Carlos Souza</li>
-                                <li>Fernanda Reis</li>
-                                <li>Mariana Duarte</li>
-                            </ul>
-                        </aside>
-                    </div>
-                </div>
-            </section>
+    <div class="client-category">
+        <h2><i class="fas fa-ban"></i> Clientes Cancelados</h2>
+        <ul id="cancelledClients" class="client-list">
+            <li><i class="fas fa-times-circle"></i> Cliente D - Cancelado em: 15/12/2024</li>
+            <li><i class="fas fa-times-circle"></i> Cliente E - Cancelado em: 10/12/2024</li>
+        </ul>
+    </div>
 
-            <!-- Mapa para monitoramento -->
-            <section class="mb-4">
-                <h3>Localização em Tempo Real</h3>
-                <div id="map" style="height: 500px; border: 1px solid #ddd;"></div>
-            </section>
+    <div class="client-category">
+        <h2><i class="fas fa-crown"></i> Clientes VIP</h2>
+        <ul id="vipClients" class="client-list">
+            <li><i class="fas fa-gift"></i> Cliente F - Benefício: Desconto de 20%</li>
+            <li><i class="fas fa-gift"></i> Cliente G - Benefício: Acesso prioritário</li>
+        </ul>
+    </div>
+</section>
 
-            <!-- Gráficos de desempenho -->
+<!-- Seção de Histórico de Clientes -->
+<section class="client-history">
+    <h2><i class="fas fa-history"></i> Histórico de Clientes</h2>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Data do Uso</th>
+                <th>Veículo Usado</th>
+                <th>Tempo de Uso</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cliente A</td>
+                <td>15/12/2024</td>
+                <td>Carro Celta</td>
+                <td>1 hora</td>
+            </tr>
+            <tr>
+                <td>Cliente B</td>
+                <td>14/12/2024</td>
+                <td>Moto R15</td>
+                <td>30 minutos</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+             <!-- Seção de Feedback dos Clientes -->
+        <section class="feedback">
+            <h2>Feedback dos Clientes</h2>
+            <div class="feedback-item">
+                <strong>Cliente 1</strong>
+                <p>“O serviço é muito bom, a navegação na interface é intuitiva!”</p>
+                <span>⭐⭐⭐⭐⭐</span>
+            </div>
+            <div class="feedback-item">
+                <strong>Cliente 2</strong>
+                <p>“Acho que pode melhorar a velocidade do carregamento dos dados.”</p>
+                <span>⭐⭐⭐⭐☆</span>
+            </div>
+        </section>
+
             <section>
-                <h3>Indicadores de Desempenho</h3>
-                <div class="row">
-                    <div class="col-md-4">
-                        <canvas id="avgSpeedChart"></canvas>
-                        <p class="text-center">Velocidade Média</p>
-                    </div>
-                    <div class="col-md-4">
-                        <canvas id="distanceChart"></canvas>
-                        <p class="text-center">Distância Percorrida</p>
-                    </div>
-                    <div class="col-md-4">
-                        <canvas id="activityChart"></canvas>
-                        <p class="text-center">Atividades Recentes</p>
-                    </div>
-                </div>
+                <div id="map" style="height: 500px;"></div>
+            </section>
+
+            <section>
+                <canvas id="avgSpeedChart"></canvas>
+                <canvas id="distanceChart"></canvas>
+                <canvas id="activityChart"></canvas>
             </section>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

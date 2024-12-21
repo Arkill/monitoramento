@@ -11,7 +11,6 @@ body {
     background-color: #121212;
     color: #e0e0e0;
     line-height: 1.6;
-    animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Inner Container */
@@ -30,53 +29,117 @@ div#container {
     align-items: center;
 }
 
-/* Header Styling */
-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-header p {
-    font-size: 1.2rem;
-    color: #b0b0b0;
-}
-
 /* Section Styling */
-section {
-    margin-bottom: 40px;
-}
-
-.card {
-    background: #1e1e1e;
-    border: none;
+div#container section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px 0;
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    transition: transform 0.3s ease-in-out;
+}
+
+div#container section:hover {
+    transform: scale(1.03);
+}
+
+/* Article Styling for Clients (Active, Cancelled, VIP) */
+div#container section article {
+    width: 48%;
+    background: linear-gradient(145deg, #292929, #3a3a3a);
+    color: #fff;
     padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-.card:hover {
-    background: #292929;
+div#container section article:hover {
+    background: linear-gradient(145deg, #3a3a3a, #4b4b4b);
     transform: translateY(-5px);
 }
 
-.card h2, .card h3 {
-    font-size: 1.5rem;
+div#container section article h2 {
+    font-size: 24px;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
-.card p {
-    font-size: 1rem;
-    margin-top: 10px;
+div#container section article ul {
+    list-style: none;
+    padding: 0;
+}
+
+div#container section article ul li {
+    font-size: 18px;
+    color: #e0e0e0;
+    margin: 10px 0;
+}
+
+/* Table Styling for Historical Clients */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #444;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+    font-size: 18px;
+}
+
+table td {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    font-size: 16px;
+}
+
+/* Feedback Section */
+.feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.feedback-item {
+    background: linear-gradient(145deg, #292929, #3a3a3a);
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.feedback-item strong {
+    font-size: 18px;
+    color: #0099ff;
+}
+
+.feedback-item p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.feedback-item span {
+    font-size: 14px;
+    color: #ffcc00;
 }
 
 /* Map Styling */
-#map {
+div#container section #map {
     width: 100%;
     height: 500px;
     border-radius: 15px;
@@ -85,7 +148,7 @@ section {
 }
 
 /* Chart Styling */
-canvas {
+div#container section canvas {
     width: 100%;
     max-width: 400px;
     height: 300px;
@@ -95,38 +158,118 @@ canvas {
     display: block;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-    .row {
-        flex-direction: column;
-        align-items: center;
-    }
+/* Seção de Clientes */
+.client-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 30px 0;
+}
 
-    .col-md-6, .col-md-4 {
+.client-category {
+    width: 30%;
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.client-category h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.client-category h2 i {
+    margin-right: 10px;
+}
+
+.client-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.client-list li {
+    font-size: 18px;
+    color: #e0e0e0;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.client-list li i {
+    margin-right: 10px;
+}
+
+/* Tabela de Histórico de Clientes */
+.client-history {
+    background-color: #333;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+}
+
+.client-history h2 {
+    font-size: 24px;
+    color: #f1c40f;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.client-history h2 i {
+    margin-right: 10px;
+}
+
+.table-dark {
+    background-color: #292929;
+    color: #e0e0e0;
+}
+
+.table-dark th, .table-dark td {
+    padding: 12px;
+    text-align: center;
+}
+
+.table-dark th {
+    background-color: #444;
+    color: #f1c40f;
+}
+
+.table-dark tr:nth-child(even) {
+    background-color: #3a3a3a;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .client-category {
         width: 100%;
         margin-bottom: 20px;
     }
 
-    header h1 {
-        font-size: 2rem;
-    }
-
-    header p {
-        font-size: 1rem;
+    .client-history {
+        padding: 15px;
     }
 }
 
-@media (max-width: 576px) {
-    body {
-        font-size: 14px;
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    div#container section {
+        flex-direction: column;
+        align-items: center;
     }
 
-    .card h2, .card h3 {
-        font-size: 1.2rem;
-    }
-
-    .card p {
-        font-size: 0.9rem;
+    div#container section article,
+    div#container section aside,
+    div#container section table,
+    div#container section canvas {
+        width: 100%;
     }
 }
 
@@ -138,4 +281,8 @@ canvas {
     to {
         opacity: 1;
     }
+}
+
+body {
+    animation: fadeIn 0.5s ease-in-out;
 }
