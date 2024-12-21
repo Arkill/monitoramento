@@ -205,11 +205,11 @@ input[data-filter] {
 
 /* Conteúdo principal */
 .content {
-  padding: 20px;
+  padding-top: 100px;
 }
 
 .container-fluid {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 

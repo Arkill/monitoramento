@@ -134,39 +134,41 @@
         </nav>
       </div>      
 
-    <!-- Conteúdo Principal -->
-    <div class="content">
-        <div class="container-fluid">
-            <div class="panel panel-default" id="table_clients">
-                <!-- Filtros ocultos para ordenação -->
-                <input type="hidden" name="sorting[sort_by]" value="email" data-filter>
-                <input type="hidden" name="sorting[sort]" value="asc" data-filter>
+   <!-- Conteúdo Principal -->
+<div class="content">
+    <div style="height: 60px;"></div> <!-- Adiciona um espaço de 60px -->
+    <div class="container-fluid">
+        <div class="panel panel-default" id="table_clients">
+            <!-- Filtros ocultos para ordenação -->
+            <input type="hidden" name="sorting[sort_by]" value="email" data-filter>
+            <input type="hidden" name="sorting[sort]" value="asc" data-filter>
 
-                <div class="panel-heading">
-                    <!-- Botões de ações no canto direito -->
-                    <ul class="nav nav-tabs nav-icons pull-right">
-                        <!-- Botão de adicionar novo usuário -->
-                        <li role="presentation">
-                            <a href="javascript:" type="button" data-modal="clients_create" data-url="cadastro.html" class="action-button" title="Adicionar Usuário">
-                                <i class="fa fa-user-plus"></i>
-                            </a>
-                        </li>
-                        <!-- Botão de adicionar novo dispositivo -->
-                        <li role="presentation">
-                            <a href="javascript:" type="button" data-modal="devices_create" data-url="cadastro_dispositivo.html" class="action-button" title="Adicionar Dispositivo">
-                                <i class="fa fa-mobile"></i>
-                            </a>
-                        </li>
-                        <!-- Botão de importar dispositivos -->
-                        <li role="presentation">
-                            <a href="javascript:" type="button" data-modal="import_devices" data-url="importar_dispositivos.html" class="action-button" title="Importar Dispositivos">
-                                <i class="fa fa-upload"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="panel-heading">
+                <!-- Botões de ações no canto direito -->
+                <ul class="nav nav-tabs nav-icons pull-right">
+                    <!-- Botão de adicionar novo usuário -->
+                    <li role="presentation">
+                        <a href="javascript:" type="button" data-modal="clients_create" data-url="cadastro.html" class="action-button" title="Adicionar Usuário">
+                            <i class="fa fa-user-plus"></i>
+                        </a>
+                    </li>
+                    <!-- Botão de adicionar novo dispositivo -->
+                    <li role="presentation">
+                        <a href="javascript:" type="button" data-modal="devices_create" data-url="cadastro_dispositivo.html" class="action-button" title="Adicionar Dispositivo">
+                            <i class="fa fa-mobile"></i>
+                        </a>
+                    </li>
+                    <!-- Botão de importar dispositivos -->
+                    <li role="presentation">
+                        <a href="javascript:" type="button" data-modal="import_devices" data-url="importar_dispositivos.html" class="action-button" title="Importar Dispositivos">
+                            <i class="fa fa-upload"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
-
+        </div>
+    </div>
+</div>
                 <!-- Título do painel -->
                 <div class="panel-title">
                     <i class="icon user"></i> Usuários e Dispositivos
